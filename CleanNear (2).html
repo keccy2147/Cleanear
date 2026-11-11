@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CleanNear – Find a local home cleaner</title>
+<style>
+:root{--bg:#f6faf8;--surf:#fff;--ink:#16302b;--mut:#4a615c;--line:#d5e3de;--brand:#0f6b5c;--brand-ink:#fff;--soft:#e3f2ee;--warn:#fff4dc;--warn-ink:#6b4a00;--err:#a4262c;--errbg:#fdecea;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1917;--surf:#16251f;--ink:#e8f3ef;--mut:#a9c0b9;--line:#2c4540;--brand:#5cc7b2;--brand-ink:#08201b;--soft:#1d3530;--warn:#3a2f10;--warn-ink:#f3d994;--err:#ff9b9b;--errbg:#3b1d1d;color-scheme:dark}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*:before,*:after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--brand)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{background:var(--surf);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:1.3rem;color:var(--ink);text-decoration:none;letter-spacing:-.02em}.logo span{color:var(--brand)}
+nav{display:flex;gap:6px;align-items:center}
+nav a{padding:10px 14px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:600;font-size:.95rem}
+nav a:hover{background:var(--soft)}nav a.cta{background:var(--brand);color:var(--brand-ink)}
+.banner{background:var(--warn);color:var(--warn-ink);font-size:.9rem;padding:8px 0;text-align:center}
+.hero{padding:48px 0 40px;background:linear-gradient(180deg,var(--soft),var(--bg))}
+h1{font-size:clamp(2rem,5vw,3.1rem);line-height:1.15;margin:0 0 14px;letter-spacing:-.02em}
+h2{font-size:1.5rem;margin:0 0 12px}h3{margin:0 0 6px;font-size:1.1rem}
+.lead{max-width:620px;color:var(--mut);font-size:1.15rem;margin:0 0 26px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:20px}
+.search{display:grid;gap:14px;grid-template-columns:2fr 1.3fr auto;align-items:end}
+@media(max-width:820px){.search{grid-template-columns:1fr}}
+label,.lbl{display:block;font-weight:600;font-size:.95rem;margin-bottom:6px}
+input,select,textarea{width:100%;font:inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);min-height:48px}
+textarea{min-height:100px;resize:vertical}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.btn{font:inherit;font-weight:700;background:var(--brand);color:var(--brand-ink);border:0;border-radius:10px;padding:12px 22px;min-height:48px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn.alt{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn:hover{filter:brightness(1.08)}
+.soon{display:flex;gap:10px;align-items:center;margin-top:8px;font-weight:500}.soon input{width:22px;height:22px;min-height:0}
+.err{color:var(--err);font-size:.9rem;margin-top:4px;min-height:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center;color:var(--mut);font-size:.95rem}
+.chip{border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:.9rem;cursor:pointer}
+.tag{background:var(--soft);border-radius:999px;padding:3px 10px;font-size:.82rem;color:var(--ink)}
+.sample{background:var(--warn);color:var(--warn-ink);border-radius:6px;padding:2px 8px;font-size:.75rem;font-weight:700}
+.steps{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:36px 0}
+.trust{margin:10px 0 50px}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:24px;margin:28px 0 50px}
+@media(max-width:820px){.layout{grid-template-columns:1fr}}
+.filters fieldset{border:0;padding:0;margin:0 0 18px}.filters legend{font-weight:700;margin-bottom:6px}
+.filters .chk{display:flex;gap:8px;align-items:center;margin:4px 0;font-weight:400}.filters .chk input{width:20px;height:20px;min-height:0}
+.grid{display:grid;gap:16px}
+.cl{display:grid;grid-template-columns:72px 1fr;gap:16px}
+@media(max-width:520px){.cl{grid-template-columns:56px 1fr}}
+.av{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.4rem;color:#fff}
+@media(max-width:520px){.av{width:56px;height:56px;font-size:1.1rem}}
+.meta{color:var(--mut);font-size:.95rem;margin:2px 0}
+.row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.rate{margin-left:auto;font-weight:800;font-size:1.1rem}
+.state{text-align:center;padding:40px 20px}
+.sk{height:120px;border-radius:16px;background:linear-gradient(90deg,var(--soft),var(--surf),var(--soft));background-size:200% 100%;animation:sh 1.2s infinite}
+@keyframes sh{to{background-position:-200% 0}}
+@media(prefers-reduced-motion:reduce){.sk{animation:none}}
+.ok{background:var(--soft);border:1px solid var(--brand);border-radius:12px;padding:18px}
+.two{display:grid;gap:14px;grid-template-columns:1fr 1fr}@media(max-width:600px){.two{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.pgrid{display:grid;gap:24px;grid-template-columns:1.2fr 1fr;margin:28px 0 50px}@media(max-width:820px){.pgrid{grid-template-columns:1fr}}
+.days{display:flex;gap:6px;flex-wrap:wrap}.day{padding:6px 12px;border-radius:8px;border:1px solid var(--line);font-size:.9rem}.day.on{background:var(--brand);color:var(--brand-ink);border-color:var(--brand);font-weight:700}
+.note{font-size:.88rem;color:var(--mut)}
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--mut);font-size:.9rem}
+.view{display:none}.view.on{display:block}
+.sr{position:absolute;left:-9999px}
+a.skip{position:absolute;left:-9999px}a.skip:focus{left:10px;top:10px;background:var(--surf);padding:10px;z-index:10}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header><div class="wrap">
+<a class="logo" href="#home">Clean<span>Near</span></a>
+<nav aria-label="Main"><a href="#home">Find a cleaner</a><a class="cta" href="#join">Join as a cleaner</a></nav>
+</div></header>
+<div class="banner" role="note">Demo site: all cleaners, areas and availability shown are made-up sample data, not real listings.</div>
+
+<main id="main" tabindex="-1">
+<!-- HOME -->
+<section class="view" id="v-home">
+<div class="hero"><div class="wrap">
+<h1>Find a home cleaner near you</h1>
+<p class="lead">Search by town, city, postcode or ZIP code, see cleaners who say they cover your area, and message them directly.</p>
+<form class="card search" id="sform" novalidate>
+<div><label for="loc">Where do you need cleaning?</label>
+<input id="loc" autocomplete="postal-code" placeholder="Town, city, postcode or ZIP" aria-describedby="locerr">
+<div class="err" id="locerr" role="alert"></div></div>
+<div><label for="date">Preferred date</label>
+<input id="date" type="date" aria-describedby="dateerr"><div class="soon"><input type="checkbox" id="soon"><label for="soon" style="margin:0;font-weight:500">I need a cleaner soon</label></div>
+<div class="err" id="dateerr" role="alert"></div></div>
+<button class="btn" type="submit">Search cleaners</button>
+</form>
+<div class="chips">Try a sample area: <span id="samples"></span></div>
+</div></div>
+<div class="wrap">
+<div class="steps">
+<div class="card"><h3>1. Search your area</h3><p class="meta">Enter where you need help and when.</p></div>
+<div class="card"><h3>2. Compare profiles</h3><p class="meta">Filter by services, availability and hourly rate.</p></div>
+<div class="card"><h3>3. Make contact</h3><p class="meta">Send a short message and agree details directly with the cleaner.</p></div>
+</div>
+<div class="card trust"><h2>Your privacy and what to expect</h2>
+<ul class="meta"><li>Share only what’s needed: your name, one way to reach you, your general area and a preferred date. Avoid sending full addresses or access codes until you’ve agreed things with the cleaner.</li>
+<li>Availability shown is what a cleaner has indicated. Always confirm dates, times, prices and tasks directly with them.</li>
+<li>CleanNear helps you find and contact cleaners. Please read profiles carefully and ask any questions you have before booking.</li></ul></div>
+</div>
+</section>
+
+<!-- RESULTS -->
+<section class="view" id="v-results"><div class="wrap">
+<div style="margin-top:28px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:end">
+<div><h2 id="rtitle" tabindex="-1">Cleaners</h2><p class="meta" id="rsub"></p></div>
+<a class="btn alt" href="#home">Change search</a></div>
+<div class="layout">
+<aside class="card filters" aria-label="Filters"><h3>Filters</h3>
+<fieldset><legend>Availability</legend>
+<label class="chk"><input type="radio" name="av" value="any" checked> Any (matching my timing)</label>
+<label class="chk"><input type="radio" name="av" value="weekend"> Weekends</label>
+<label class="chk"><input type="radio" name="av" value="weekday"> Weekdays</label></fieldset>
+<fieldset><legend>Services</legend><div id="svc"></div></fieldset>
+<fieldset><legend>Max hourly rate: <span id="rv">$40</span></legend>
+<input type="range" id="rate" min="12" max="40" value="40" aria-label="Maximum hourly rate"></fieldset>
+<label for="sort">Sort by</label><select id="sort"><option value="rate">Lowest rate</option><option value="name">Name</option></select>
+<p class="note" style="margin-top:14px">Rates are sample figures.</p>
+</aside>
+<div><div id="rlist" class="grid" aria-live="polite"></div></div>
+</div></div></section>
+
+<!-- PROFILE -->
+<section class="view" id="v-profile"><div class="wrap" id="pbody"></div></section>
+
+<!-- JOIN -->
+<section class="view" id="v-join"><div class="wrap" style="max-width:720px;margin:28px auto 50px">
+<h1 style="font-size:2rem">Join as a cleaner</h1>
+<p class="lead" style="font-size:1.05rem">Tell us a little about yourself and the area you cover. This demo form doesn’t send anything anywhere.</p>
+<div class="card" id="jwrap"><form id="jform" novalidate>
+<div class="two"><div class="field"><label for="jn">Full name</label><input id="jn" autocomplete="name"><div class="err"></div></div>
+<div class="field"><label for="je">Email</label><input id="je" type="email" autocomplete="email"><div class="err"></div></div></div>
+<div class="field"><label for="ja">Areas you cover</label><input id="ja" placeholder="e.g. town names or postcodes, separated by commas"><div class="err"></div></div>
+<div class="field"><div class="lbl">Services you offer</div><div id="jsvc"></div><div class="err"></div></div>
+<div class="two"><div class="field"><label for="jr">Hourly rate (optional)</label><input id="jr" type="number" min="1" max="200" placeholder="$"><div class="err"></div></div>
+<div class="field"><label for="jd">Usual availability</label><input id="jd" placeholder="e.g. weekday mornings"><div class="err"></div></div></div>
+<div class="field"><label for="ji">Short introduction</label><textarea id="ji" maxlength="400"></textarea><div class="err"></div></div>
+<button class="btn" type="submit">Express interest</button>
+</form></div></div></section>
+</main>
+
+<footer><div class="wrap">CleanNear is a front-end demonstration. Sample profiles are fictional and do not represent real people, availability or verified listings.</div></footer>
+
+<script>
+(function(){
+"use strict";
+var SERVICES=["General cleaning","Deep cleaning","Kitchen & bathrooms","Laundry & ironing","Windows (inside)","Move-out cleaning"];
+var COLORS=["#0f6b5c","#7a4f9e","#b5541c","#2f6aa3","#9c3a5a","#52703a","#8a6a12","#3c6e71"];
+var DAYS=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+// Sample data only. Areas hold lowercase names and postcode/ZIP prefixes.
+var CLEANERS=[
+{id:1,name:"Amara Okafor",area:"Riverton & nearby",areas:["riverton","rv1","10001","northgate"],days:[1,2,3,4,5],soon:true,svc:[0,2,3],rate:18,intro:"Friendly and tidy. I enjoy keeping family homes fresh week to week."},
+{id:2,name:"Daniel Whitfield",area:"Riverton, Lakeside",areas:["riverton","lakeside","rv1","ls3","10001"],days:[0,6],soon:false,svc:[0,1,5],rate:24,intro:"Weekend deep cleans and move-out jobs are my speciality."},
+{id:3,name:"Priya Nair",area:"Maplewood",areas:["maplewood","mw2","20002"],days:[1,3,5,6],soon:true,svc:[0,2,4],rate:21,intro:"Attention to detail with kitchens, bathrooms and windows."},
+{id:4,name:"Tomás Herrera",area:"Lakeside & Oakham",areas:["lakeside","oakham","ls3","oh4","30003"],days:[2,4,6],soon:false,svc:[1,2,5],rate:32,intro:"Thorough deep cleans. Happy to bring my own supplies on request."},
+{id:5,name:"Grace Mensah",area:"Maplewood, Riverton",areas:["maplewood","riverton","mw2","rv1","20002","10001"],days:[1,2,3,4],soon:true,svc:[0,3],rate:16,intro:"Reliable regular cleans, plus laundry and ironing help."},
+{id:6,name:"Liam Brennan",area:"Oakham",areas:["oakham","oh4","30003"],days:[0,1,2,3,4,5,6],soon:true,svc:[0,1,2,4],rate:27,intro:"Flexible hours across the week. Ask me about one-off cleans."},
+{id:7,name:"Sofia Rossi",area:"Northgate, Riverton",areas:["northgate","riverton","ng7","rv1","10001"],days:[5,6,0],soon:false,svc:[0,4,5],rate:36,intro:"Move-out and end-of-tenancy cleans with a detailed checklist."}
+];
+var AREAS=["Riverton","Maplewood","Lakeside","Oakham","10001"];
+var S={q:"",date:"",soon:false,av:"any",svc:{},max:40,sort:"rate",state:"idle",fail:false};
+var $=function(s,r){return (r||document).querySelector(s)};
+function esc(t){return String(t).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function chipsHTML(list){return list.map(function(i){return '<span class="tag">'+esc(SERVICES[i])+'</span>'}).join("")}
+function initials(n){return n.split(" ").map(function(p){return p[0]}).join("").slice(0,2)}
+function availText(c){return c.days.map(function(d){return DAYS[d]}).join(", ")+(c.soon?" · can start soon":"")}
+function today(){var d=new Date();d.setHours(0,0,0,0);return d}
+
+// Static UI
+$("#samples").innerHTML=AREAS.map(function(a){return '<button type="button" class="chip" data-area="'+a+'">'+a+'</button>'}).join(" ");
+$("#svc").innerHTML=SERVICES.map(function(s,i){return '<label class="chk"><input type="checkbox" data-svc="'+i+'"> '+esc(s)+'</label>'}).join("");
+$("#jsvc").innerHTML=SERVICES.map(function(s,i){return '<label class="chk" style="display:flex;gap:8px;font-weight:400;align-items:center"><input type="checkbox" style="width:20px;height:20px;min-height:0" value="'+i+'"> '+esc(s)+'</label>'}).join("");
+var dEl=$("#date");dEl.min=today().toISOString().slice(0,10);
+$("#soon").addEventListener("change",function(){dEl.disabled=this.checked;if(this.checked)dEl.value=""});
+
+// Search
+$("#samples").addEventListener("click",function(e){var a=e.target.dataset.area;if(a){$("#loc").value=a;$("#sform").requestSubmit()}});
+$("#sform").addEventListener("submit",function(e){
+ e.preventDefault();
+ var q=$("#loc").value.trim(),d=dEl.value,soon=$("#soon").checked,ok=true;
+ $("#locerr").textContent="";$("#dateerr").textContent="";
+ if(q.length<2){$("#locerr").textContent="Please enter a town, city, postcode or ZIP code.";ok=false}
+ if(!soon&&!d){$("#dateerr").textContent="Choose a date, or tick “I need a cleaner soon”.";ok=false}
+ else if(d&&new Date(d+"T00:00")<today()){$("#dateerr").textContent="Please choose today or a future date.";ok=false}
+ if(!ok){($("#locerr").textContent?$("#loc"):dEl).focus();return}
+ S.q=q;S.date=d;S.soon=soon;runSearch();location.hash="results";
+});
+function runSearch(){
+ S.state="loading";renderResults();
+ setTimeout(function(){
+  // Demo: typing "error" simulates a failed lookup so the error state can be seen.
+  S.state=/^error$/i.test(S.q)?"error":"ready";renderResults();
+ },700);
+}
+function matches(c){
+ var q=S.q.toLowerCase().replace(/\s+/g,"");
+ var areaOk=c.areas.some(function(a){return q.indexOf(a)===0||a.indexOf(q)===0||(q.length>=3&&q.slice(0,3)===a.slice(0,3)&&/\d/.test(q))});
+ if(!areaOk)return false;
+ if(S.soon)return c.soon;
+ if(S.date){return c.days.indexOf(new Date(S.date+"T00:00").getDay())>-1}
+ return true;
+}
+function filtered(){
+ var sel=Object.keys(S.svc).filter(function(k){return S.svc[k]}).map(Number);
+ return CLEANERS.filter(matches).filter(function(c){
+  if(c.rate>S.max)return false;
+  if(sel.length&&!sel.every(function(i){return c.svc.indexOf(i)>-1}))return false;
+  if(S.av==="weekend"&&!c.days.some(function(d){return d===0||d===6}))return false;
+  if(S.av==="weekday"&&!c.days.some(function(d){return d>0&&d<6}))return false;
+  return true;
+ }).sort(function(a,b){return S.sort==="name"?a.name.localeCompare(b.name):a.rate-b.rate});
+}
+function card(c){
+ return '<article class="card cl" aria-labelledby="n'+c.id+'"><div class="av" style="background:'+COLORS[c.id%8]+'" aria-hidden="true">'+initials(c.name)+'</div><div>'
+ +'<h3 id="n'+c.id+'">'+esc(c.name)+' <span class="sample">Sample profile</span></h3>'
+ +'<p class="meta">Serves: '+esc(c.area)+'</p><p class="meta">Available: '+esc(availText(c))+'</p>'
+ +'<div class="row">'+chipsHTML(c.svc)+'</div><p style="margin:6px 0">'+esc(c.intro)+'</p>'
+ +'<div class="actions"><a class="btn" href="#profile-'+c.id+'">View profile</a><a class="btn alt" href="#profile-'+c.id+'-contact">Contact</a><span class="rate">$'+c.rate+'/hr</span></div></div></article>';
+}
+function renderResults(){
+ var L=$("#rlist"),when=S.soon?"as soon as possible":(S.date?new Date(S.date+"T00:00").toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"short"}):"");
+ $("#rtitle").textContent=S.q?"Cleaners near “"+S.q+"”":"Cleaners";
+ $("#rsub").textContent=S.q?"Timing: "+when+" · Sample data for demonstration only":"";
+ if(S.state==="loading"){L.setAttribute("aria-busy","true");L.innerHTML='<div class="sk"></div><div class="sk"></div><div class="sk"></div><p class="sr">Loading cleaners…</p>';return}
+ L.removeAttribute("aria-busy");
+ if(S.state==="error"){L.innerHTML='<div class="card state" role="alert"><h3>We couldn’t load cleaners</h3><p class="meta">Something went wrong while searching. Please try again, or try a different area.</p><div class="actions" style="justify-content:center"><button class="btn" id="retry">Try again</button><a class="btn alt" href="#home">Try another area</a></div></div>';$("#retry").onclick=function(){S.q="";location.hash="home"};return}
+ var r=filtered();
+ if(!r.length){
+  var anyArea=CLEANERS.some(matches);
+  L.innerHTML='<div class="card state"><h3>No cleaners found</h3><p class="meta">'+(anyArea?"No sample cleaners match your current filters. Try loosening them.":"No sample cleaners cover “"+esc(S.q)+"” for that timing yet.")+' Try another area or date.</p><div class="actions" style="justify-content:center">'+(anyArea?'<button class="btn" id="reset">Clear filters</button>':'')+'<a class="btn alt" href="#home">Try another area</a></div><div class="chips" style="justify-content:center">Sample areas: '+AREAS.map(function(a){return '<button class="chip" data-area="'+a+'">'+a+'</button>'}).join(" ")+'</div></div>';
+  var rs=$("#reset");if(rs)rs.onclick=resetFilters;return}
+ L.innerHTML='<p class="meta" style="margin:0">'+r.length+' sample cleaner'+(r.length>1?"s":"")+' found. Please confirm availability directly with the cleaner.</p>'+r.map(card).join("");
+}
+$("#rlist").addEventListener("click",function(e){var a=e.target.dataset.area;if(a){S.q=a;S.soon=true;S.date="";runSearch()}});
+function resetFilters(){S.av="any";S.svc={};S.max=40;$("#rate").value=40;$("#rv").textContent="$40";document.querySelectorAll("[data-svc]").forEach(function(i){i.checked=false});document.querySelector('input[name=av][value=any]').checked=true;renderResults()}
+document.querySelectorAll("input[name=av]").forEach(function(i){i.addEventListener("change",function(){S.av=i.value;renderResults()})});
+document.querySelectorAll("[data-svc]").forEach(function(i){i.addEventListener("change",function(){S.svc[i.dataset.svc]=i.checked;renderResults()})});
+$("#rate").addEventListener("input",function(){S.max=+this.value;$("#rv").textContent="$"+this.value;if(S.state==="ready")renderResults()});
+$("#sort").addEventListener("change",function(){S.sort=this.value;renderResults()});
+
+// Profile
+function field(id,label,type,val,extra){return '<div class="field"><label for="'+id+'">'+label+'</label><input id="'+id+'" type="'+(type||"text")+'" value="'+esc(val||"")+'" '+(extra||"")+'><div class="err" role="alert"></div></div>'}
+function renderProfile(id,focusForm){
+ var c=CLEANERS.filter(function(x){return x.id===id})[0],B=$("#pbody");
+ if(!c){B.innerHTML='<div class="card state" style="margin:28px 0"><h3>Profile not found</h3><a class="btn" href="#home">Back to search</a></div>';return}
+ B.innerHTML='<p style="margin:20px 0 0"><a href="'+(S.q?"#results":"#home")+'">← Back to '+(S.q?"results":"search")+'</a></p><div class="pgrid"><div>'
+ +'<div class="card"><div class="cl"><div class="av" style="background:'+COLORS[c.id%8]+'" aria-hidden="true">'+initials(c.name)+'</div><div><h1 style="font-size:1.8rem;margin:0">'+esc(c.name)+'</h1><p class="meta"><span class="sample">Sample profile</span> · Serves '+esc(c.area)+'</p><p class="rate" style="margin:0">$'+c.rate+'/hr</p></div></div>'
+ +'<h3 style="margin-top:20px">About</h3><p>'+esc(c.intro)+'</p>'
+ +'<h3>Services offered</h3><div class="row">'+chipsHTML(c.svc)+'</div>'
+ +'<h3 style="margin-top:16px">Usual availability</h3><div class="days" aria-label="Available days">'+DAYS.map(function(d,i){return '<span class="day'+(c.days.indexOf(i)>-1?' on':'')+'">'+d+(c.days.indexOf(i)>-1?'<span class="sr"> available</span>':'<span class="sr"> not usually available</span>')+'</span>'}).join("")+'</div>'
+ +'<p class="note">'+(c.soon?"Indicated they may be able to start soon. ":"")+'This is sample information. Always confirm availability directly with the cleaner.</p></div></div>'
+ +'<div class="card" id="cbox"><h2 id="ch" tabindex="-1">Contact '+esc(c.name.split(" ")[0])+'</h2><form id="cform" novalidate>'
+ +field("cn","Your name","text","","autocomplete=name")+field("cc","Email or phone","text","","autocomplete=email aria-describedby=cnote")
+ +field("cl","Your area (town or postcode only)","text",S.q,"")+field("cd","Preferred date","date",S.date,"min="+dEl.min)
+ +'<div class="field"><label for="cm">Message</label><textarea id="cm" maxlength="500" placeholder="Home size, tasks, preferred times…"></textarea><div class="err" role="alert"></div></div>'
+ +'<button class="btn" style="width:100%" type="submit">Send message</button><p class="note" id="cnote">We only ask for what’s needed. Please don’t share your full address, access codes or payment details here.</p></form></div></div>';
+ $("#cform").addEventListener("submit",function(e){
+  e.preventDefault();var ok=true,v=function(i){return $("#"+i).value.trim()};
+  function bad(i,m){$("#"+i).parentNode.querySelector(".err").textContent=m;ok=false}
+  ["cn","cc","cl","cd","cm"].forEach(function(i){$("#"+i).parentNode.querySelector(".err").textContent=""});
+  if(v("cn").length<2)bad("cn","Please enter your name.");
+  var cc=v("cc");if(!(/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(cc)||cc.replace(/\D/g,"").length>=7))bad("cc","Enter a valid email address or phone number.");
+  if(v("cl").length<2)bad("cl","Please enter your town, city, postcode or ZIP.");
+  if(v("cd")&&new Date(v("cd")+"T00:00")<today())bad("cd","Please choose today or a future date.");
+  if(v("cm").length<10)bad("cm","Please add a short message (at least 10 characters).");
+  if(!ok){var f=document.querySelector("#cform .err:not(:empty)");f.parentNode.querySelector("input,textarea").focus();return}
+  $("#cbox").innerHTML='<div class="ok" role="status" tabindex="-1" id="cok"><h2>Message ready to send</h2><p>Thanks, '+esc(v("cn"))+'. In a live version, your message would go to '+esc(c.name)+' and they’d reply using the contact details you gave. Nothing was actually sent in this demo.</p><p class="note">Remember to confirm date, time, price and tasks directly with the cleaner.</p><a class="btn alt" href="#results">Back to results</a></div>';
+  $("#cok").focus();
+ });
+ if(focusForm)setTimeout(function(){$("#ch").focus()},50);
+}
+
+// Join
+$("#jform").addEventListener("submit",function(e){
+ e.preventDefault();var ok=true,errs=document.querySelectorAll("#jform .err");errs.forEach(function(x){x.textContent=""});
+ function bad(i,m){var el=typeof i==="string"?$("#"+i):i;(el.parentNode.querySelector(".err")||el.parentNode.parentNode.querySelector(".err")).textContent=m;ok=false}
+ var v=function(i){return $("#"+i).value.trim()};
+ if(v("jn").length<2)bad("jn","Please enter your name.");
+ if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v("je")))bad("je","Enter a valid email address.");
+ if(v("ja").length<2)bad("ja","Tell us which areas you cover.");
+ if(!document.querySelectorAll("#jsvc input:checked").length)bad($("#jsvc"),"Choose at least one service.");
+ if(v("jr")&&(+v("jr")<1||+v("jr")>200))bad("jr","Enter a rate between 1 and 200.");
+ if(!ok){var f=document.querySelector("#jform .err:not(:empty)");var t=f.parentNode.querySelector("input,textarea");t&&t.focus();return}
+ $("#jwrap").innerHTML='<div class="ok" role="status" tabindex="-1" id="jok"><h2>Thanks for your interest, '+esc(v("jn").split(" ")[0])+'!</h2><p>In a live version we’d get in touch at '+esc(v("je"))+' with next steps. Nothing was sent in this demo.</p><a class="btn alt" href="#home">Back to home</a></div>';
+ $("#jok").focus();
+});
+
+// Router
+function route(){
+ var h=location.hash.slice(1)||"home",m=/^profile-(\d+)(-contact)?$/.exec(h),view="home";
+ if(m)view="profile";else if(h==="results"||h==="join")view=h;
+ if(view==="results"&&!S.q){location.hash="home";return}
+ document.querySelectorAll(".view").forEach(function(s){s.classList.toggle("on",s.id==="v-"+view)});
+ if(view==="profile")renderProfile(+m[1],!!m[2]);
+ if(view==="results"&&S.state==="idle")runSearch();
+ if(view==="results")renderResults();
+ if(!(m&&m[2])){window.scrollTo(0,0);if(view!=="home")$("#main").focus({preventScroll:true})}
+ document.title="CleanNear – "+({home:"Find a local home cleaner",results:"Results",profile:"Cleaner profile",join:"Join as a cleaner"})[view];
+}
+window.addEventListener("hashchange",route);route();
+})();
+</script>
+</body>
+</html>
